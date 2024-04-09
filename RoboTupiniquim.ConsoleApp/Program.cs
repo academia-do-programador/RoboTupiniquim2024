@@ -2,101 +2,50 @@
 {
     internal class Program
     {
-        // variável global
-        static int posicaoX = 0;
-        static int posicaoY = 0;
-        static char direcao = 'N';
 
         static void Main(string[] args)
         {
             int robosEnviados = 2;
 
-            string[] coordenadas = new string[robosEnviados];
-            string[] ordensIniciais = new string[robosEnviados];
+            Robo[] robos = new Robo[robosEnviados];
 
-            // preenchimento de ordens do robô
             for (int robo = 0; robo < robosEnviados; robo++)
             {
-                coordenadas[robo] = Console.ReadLine();
-                ordensIniciais[robo] = Console.ReadLine();
-            }
+                string[] coordenadas = Console.ReadLine().Split(' ');
 
-            Console.Clear();
+                Robo roboAtual = new Robo();
 
-            // processar
-            for (int robo = 0; robo < robosEnviados; robo++)
-            {
-                string[] coordenadasAtuais = coordenadas[robo].Split(' ');
-                char[] ordens = ordensIniciais[robo].ToCharArray();
+                roboAtual.PosicaoX = Convert.ToInt32(coordenadas[0]);
+                roboAtual.PosicaoY = Convert.ToInt32(coordenadas[1]);
+                roboAtual.Direcao = Convert.ToChar(coordenadas[2]);
 
-                posicaoX = Convert.ToInt32(coordenadasAtuais[0]);
-                posicaoY = Convert.ToInt32(coordenadasAtuais[1]);
-                direcao = Convert.ToChar(coordenadasAtuais[2]);
+                char[] ordens = Console.ReadLine().ToCharArray();
 
                 for (int ordem = 0; ordem < ordens.Length; ordem++)
                 {
                     char ordemAtual = ordens[ordem];
 
                     if (ordemAtual == 'E')
-                        VirarEsquerda();
+                        roboAtual.VirarEsquerda();
 
                     else if (ordemAtual == 'D')
-                        VirarDireita();
+                        roboAtual.VirarDireita();
 
                     else if (ordemAtual == 'M')
-                        MoverRobo();
+                        roboAtual.Mover();
                 }
 
-                Console.WriteLine($"{posicaoX} {posicaoY} {direcao}");
+                robos[robo] = roboAtual;
+            }
+
+            Console.Clear();
+
+            for (int robo = 0; robo < robos.Length; robo++)
+            {
+                Console.WriteLine($"{robos[robo].PosicaoX} {robos[robo].PosicaoY} {robos[robo].Direcao}");
             }
 
             Console.ReadLine();
-        }
-
-        private static void MoverRobo()
-        {
-            if (direcao == 'N')
-                posicaoY++;
-
-            else if (direcao == 'S')
-                posicaoY--;
-
-            else if (direcao == 'O')
-                posicaoX--;
-
-            else if (direcao == 'L')
-                posicaoX++;
-        }
-
-        private static void VirarDireita()
-        {
-            if (direcao == 'N')
-                direcao = 'L';
-
-            else if (direcao == 'L')
-                direcao = 'S';
-
-            else if (direcao == 'S')
-                direcao = 'O';
-
-            else if (direcao == 'O')
-                direcao = 'N';
-
-        }
-
-        private static void VirarEsquerda()
-        {
-            if (direcao == 'N')
-                direcao = 'O';
-
-            else if (direcao == 'O')
-                direcao = 'S';
-
-            else if (direcao == 'S')
-                direcao = 'L';
-
-            else if (direcao == 'L')
-                direcao = 'N';
         }
     }
 }
